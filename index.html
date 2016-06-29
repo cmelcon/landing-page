@@ -118,8 +118,8 @@
           <label for="telephone">Telephone</label>
       </div>
     </div>
-    <input type="hidden" value="cmelcon@fvi.edu" name="dest_email">
-    <button type="submit" class="waves-effect waves-light btn">Submit</button>
+    <input type="hidden" value="cmelcon@fvi.edu" id="dest_email">
+    <span  id="formsubmit" class="waves-effect waves-light btn">Submit</span>
 
     </form>
   </div>
@@ -128,6 +128,31 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
 <script>
 $(".button-collapse").sideNav();
+$("#formsubmit").on("click", function(e){
+  $("#formsubmit").html("Please wait .......");
+  $("#formsubmit").off("click");
+  $.ajax({
+    url: $("form").attr("action"),
+    method: "POST",
+    success: function(resp, txt, xhr){
+      console.log(resp);
+      $("#formsubmit").html(resp);
+      $("input, textarea").val("");
+    },
+    error: function(err){
+      alert(err);
+    },
+    data: {
+      full_name: $("first-name").val() +" " + $("last-name").val(),
+      email: $("email").val(),
+      message: $("textarea1").val(),
+      dest_email: $("#dest_email").val(),
+
+    },
+
+  })
+})
 </script>
+
 </body>
 </html>
